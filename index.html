@@ -1,18 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="./assets/css/style.css" />
+        <title>Project</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./assets/css/style.css">
-    <title>Project</title>
-</head>
+    <body>
+        <button id="openModal">Open Cash Count</button>
 
-<body>
-    start
+        <div class="modal-overlay" id="modalOverlay">
+            <div class="modal">
+                <div class="modal-header">
+                    <h2>End of Shift Count</h2>
+                    <small id="info"></small>
+                </div>
 
-    <script src="./assets/js/main.js"></script>
-</body>
+                <div id="formContainer">
+                    <div class="form-group">
+                        <label>1000 ₴:</label><input type="number" min="0" data-value="1000" />
+                    </div>
+                    <div class="form-group"><label>500 ₴:</label><input type="number" min="0" data-value="500" /></div>
+                    <div class="form-group"><label>200 ₴:</label><input type="number" min="0" data-value="200" /></div>
+                    <div class="form-group"><label>100 ₴:</label><input type="number" min="0" data-value="100" /></div>
+                    <div class="form-group"><label>50 ₴:</label><input type="number" min="0" data-value="50" /></div>
+                    <div class="form-group"><label>20 ₴:</label><input type="number" min="0" data-value="20" /></div>
+                    <div class="form-group"><label>10 ₴:</label><input type="number" min="0" data-value="10" /></div>
+                    <div class="form-group"><label>5 ₴:</label><input type="number" min="0" data-value="5" /></div>
+                    <div class="form-group"><label>2 ₴:</label><input type="number" min="0" data-value="2" /></div>
+                    <div class="form-group"><label>1 ₴:</label><input type="number" min="0" data-value="1" /></div>
+                    <div class="form-group">
+                        <label>10 ₴ (coin):</label><input type="number" min="0" data-value="10" />
+                    </div>
+                    <div class="form-group">
+                        <label>5 ₴ (coin):</label><input type="number" min="0" data-value="5" />
+                    </div>
+                    <div class="form-group">
+                        <label>2 ₴ (coin):</label><input type="number" min="0" data-value="2" />
+                    </div>
+                    <div class="form-group">
+                        <label>1 ₴ (coin):</label><input type="number" min="0" data-value="1" />
+                    </div>
+                    <div class="form-group"><label>50 коп:</label><input type="number" min="0" data-value="0.5" /></div>
+                    <div class="form-group">
+                        <label>25 коп:</label><input type="number" min="0" data-value="0.25" />
+                    </div>
+                </div>
 
+                <div class="total">Total: <span id="total">0.00 ₴</span></div>
+                <button class="close-btn" id="closeModal">Close</button>
+            </div>
+        </div>
+
+        <script src="./assets/js/main.js"></script>
+    </body>
 </html>
