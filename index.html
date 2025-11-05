@@ -9,50 +9,83 @@
     </head>
 
     <body>
-        <button id="openModal">Open Cash Count</button>
+        <main id="cash-count">
+            <button id="openModal">Зробити звіт</button>
 
-        <div class="modal-overlay" id="modalOverlay">
-            <div class="modal">
-                <div class="modal-header">
-                    <h2>End of Shift Count</h2>
-                    <small id="info"></small>
+            <div class="modal-overlay" id="modalOverlay">
+                <div class="modal">
+                    <div class="modal-header">
+                        <h2>Звіт</h2>
+                        <span id="info"></span>
+                        <button id="themeToggle" class="theme-toggle">🌙</button>
+                    </div>
+
+                    <div id="formContainer">
+                        <div>
+                            <div class="form-group">
+                                <label>1000 грн:</label><input type="number" min="0" data-value="1000" />
+                            </div>
+                            <div class="form-group">
+                                <label>500 грн:</label><input type="number" min="0" data-value="500" />
+                            </div>
+                            <div class="form-group">
+                                <label>200 грн:</label><input type="number" min="0" data-value="200" />
+                            </div>
+                            <div class="form-group">
+                                <label>100 грн:</label><input type="number" min="0" data-value="100" />
+                            </div>
+                            <div class="form-group">
+                                <label>50 грн:</label><input type="number" min="0" data-value="50" />
+                            </div>
+                            <div class="form-group">
+                                <label>20 грн:</label><input type="number" min="0" data-value="20" />
+                            </div>
+                            <div class="form-group">
+                                <label>10 грн:</label><input type="number" min="0" data-value="10" />
+                            </div>
+                            <div class="form-group">
+                                <label>5 грн:</label><input type="number" min="0" data-value="5" />
+                            </div>
+                            <div class="form-group">
+                                <label>2 грн:</label><input type="number" min="0" data-value="2" />
+                            </div>
+                            <div class="form-group">
+                                <label>1 грн:</label><input type="number" min="0" data-value="1" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="form-group">
+                                <label>10 грн. (коп.):</label><input type="number" min="0" data-value="10" />
+                            </div>
+                            <div class="form-group">
+                                <label>5 грн. (коп.):</label><input type="number" min="0" data-value="5" />
+                            </div>
+                            <div class="form-group">
+                                <label>2 грн. (коп.):</label><input type="number" min="0" data-value="2" />
+                            </div>
+                            <div class="form-group">
+                                <label>1 грн. (коп.):</label><input type="number" min="0" data-value="1" />
+                            </div>
+                            <div class="form-group">
+                                <label>50 коп:</label><input type="number" min="0" data-value="0.5" />
+                            </div>
+                            <div class="form-group">
+                                <label>25 коп:</label><input type="number" min="0" data-value="0.25" />
+                            </div>
+                        </div>
+                        <div class="summary-section">
+                            <h3>Підсумок</h3>
+                            <div id="summaryTable" class="summary-table">
+                                <p class="placeholder">Заповніть поля, щоб побачити підсумок 💰</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="total">Усього: <span id="total">0.00 грн.</span></div>
+                    <button class="close-btn" id="closeModal">Зберегти</button>
                 </div>
-
-                <div id="formContainer">
-                    <div class="form-group">
-                        <label>1000 ₴:</label><input type="number" min="0" data-value="1000" />
-                    </div>
-                    <div class="form-group"><label>500 ₴:</label><input type="number" min="0" data-value="500" /></div>
-                    <div class="form-group"><label>200 ₴:</label><input type="number" min="0" data-value="200" /></div>
-                    <div class="form-group"><label>100 ₴:</label><input type="number" min="0" data-value="100" /></div>
-                    <div class="form-group"><label>50 ₴:</label><input type="number" min="0" data-value="50" /></div>
-                    <div class="form-group"><label>20 ₴:</label><input type="number" min="0" data-value="20" /></div>
-                    <div class="form-group"><label>10 ₴:</label><input type="number" min="0" data-value="10" /></div>
-                    <div class="form-group"><label>5 ₴:</label><input type="number" min="0" data-value="5" /></div>
-                    <div class="form-group"><label>2 ₴:</label><input type="number" min="0" data-value="2" /></div>
-                    <div class="form-group"><label>1 ₴:</label><input type="number" min="0" data-value="1" /></div>
-                    <div class="form-group">
-                        <label>10 ₴ (coin):</label><input type="number" min="0" data-value="10" />
-                    </div>
-                    <div class="form-group">
-                        <label>5 ₴ (coin):</label><input type="number" min="0" data-value="5" />
-                    </div>
-                    <div class="form-group">
-                        <label>2 ₴ (coin):</label><input type="number" min="0" data-value="2" />
-                    </div>
-                    <div class="form-group">
-                        <label>1 ₴ (coin):</label><input type="number" min="0" data-value="1" />
-                    </div>
-                    <div class="form-group"><label>50 коп:</label><input type="number" min="0" data-value="0.5" /></div>
-                    <div class="form-group">
-                        <label>25 коп:</label><input type="number" min="0" data-value="0.25" />
-                    </div>
-                </div>
-
-                <div class="total">Total: <span id="total">0.00 ₴</span></div>
-                <button class="close-btn" id="closeModal">Close</button>
             </div>
-        </div>
+        </main>
 
         <script src="./assets/js/main.js"></script>
     </body>
