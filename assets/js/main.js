@@ -106,3 +106,26 @@ themeToggle.addEventListener("click", () => {
         themeToggle.textContent = "🌙";
     }
 });
+
+// --- Cash & Non-Cash total calculation ---
+const cashInputs = document.querySelectorAll("#cash-count #cash-non-cash input");
+const totalSumDisplay = document.querySelector("#cash-count .total_sum span");
+
+// Function to update document total
+function updateDocumentTotal() {
+    let totalSum = 0;
+    cashInputs.forEach((input) => {
+        const value = parseFloat(input.value) || 0;
+        totalSum += value;
+    });
+
+    totalSumDisplay.textContent = `${totalSum.toFixed(2)} грн.`;
+    totalSumDisplay.classList.add("updated");
+
+    setTimeout(() => totalSumDisplay.classList.remove("updated"), 500);
+}
+
+// Listen for changes on both fields
+cashInputs.forEach((input) => {
+    input.addEventListener("input", updateDocumentTotal);
+});
