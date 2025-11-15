@@ -1,104 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
     <head>
         <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="stylesheet" href="./assets/css/style.css" />
-        <title>Project</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+        <title>Cash Count</title>
     </head>
 
-    <body>
-        <main id="cash-count">
-            <button id="openModal">Зробити звіт</button>
+    <body class="bg-light">
+        <main id="cash-count" class="container py-5 text-center">
+            <button class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#cashModal">
+                Зробити звіт
+            </button>
+        </main>
 
-            <div class="modal-overlay" id="modalOverlay">
-                <div class="modal">
+        <!-- Modal -->
+        <div class="modal fade" id="cashModal" tabindex="-1">
+            <div class="modal-dialog modal-xl modal-dialog-centered">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <h2>Звіт</h2>
-                        <span id="info"></span>
-                        <button id="themeToggle" class="theme-toggle">🌙</button>
+                        <h5 class="modal-title">Звіт</h5>
+                        <span id="info" class="me-auto ms-3 small text-muted"></span>
+
+                        <button id="themeToggle" class="btn btn-outline-secondary btn-sm">🌙</button>
+
+                        <button type="button" class="btn-close ms-2" data-bs-dismiss="modal"></button>
                     </div>
 
-                    <div id="formContainer">
-                        <div>
-                            <div class="form-group">
-                                <label>1000 грн:</label><input type="number" min="0" data-value="1000" />
+                    <div class="modal-body">
+                        <div class="row g-3">
+                            <!-- LEFT COLUMN -->
+                            <div class="col-md-4">
+                                <div class="card p-3">
+                                    <h6 class="mb-3">Банкноти</h6>
+
+                                    <div id="banknotes" class="vstack gap-2">
+                                        <!-- Generated via JS -->
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>500 грн:</label><input type="number" min="0" data-value="500" />
+
+                            <!-- RIGHT COLUMN -->
+                            <div class="col-md-4">
+                                <div class="card p-3">
+                                    <h6 class="mb-3">Монети</h6>
+
+                                    <div id="coins" class="vstack gap-2">
+                                        <!-- Generated via JS -->
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label>200 грн:</label><input type="number" min="0" data-value="200" />
-                            </div>
-                            <div class="form-group">
-                                <label>100 грн:</label><input type="number" min="0" data-value="100" />
-                            </div>
-                            <div class="form-group">
-                                <label>50 грн:</label><input type="number" min="0" data-value="50" />
-                            </div>
-                            <div class="form-group">
-                                <label>20 грн:</label><input type="number" min="0" data-value="20" />
-                            </div>
-                            <div class="form-group">
-                                <label>10 грн:</label><input type="number" min="0" data-value="10" />
-                            </div>
-                            <div class="form-group">
-                                <label>5 грн:</label><input type="number" min="0" data-value="5" />
-                            </div>
-                            <div class="form-group">
-                                <label>2 грн:</label><input type="number" min="0" data-value="2" />
-                            </div>
-                            <div class="form-group">
-                                <label>1 грн:</label><input type="number" min="0" data-value="1" />
-                            </div>
-                        </div>
-                        <div>
-                            <div class="form-group">
-                                <label>10 грн. (коп.):</label><input type="number" min="0" data-value="10" />
-                            </div>
-                            <div class="form-group">
-                                <label>5 грн. (коп.):</label><input type="number" min="0" data-value="5" />
-                            </div>
-                            <div class="form-group">
-                                <label>2 грн. (коп.):</label><input type="number" min="0" data-value="2" />
-                            </div>
-                            <div class="form-group">
-                                <label>1 грн. (коп.):</label><input type="number" min="0" data-value="1" />
-                            </div>
-                            <div class="form-group">
-                                <label>50 коп:</label><input type="number" min="0" data-value="0.5" />
-                            </div>
-                            <div class="form-group">
-                                <label>25 коп:</label><input type="number" min="0" data-value="0.25" />
+
+                            <!-- SUMMARY -->
+                            <div class="col-md-4">
+                                <div class="card p-3">
+                                    <h6 class="mb-3">Підсумок</h6>
+
+                                    <ul id="summaryList" class="list-group small">
+                                        <li class="list-group-item text-muted">Заповніть поля</li>
+                                    </ul>
+
+                                    <div class="mt-3 fs-5">Усього: <strong id="total">0.00 грн</strong></div>
+                                </div>
                             </div>
                         </div>
-                        <div class="summary-section">
-                            <h3>Підсумок</h3>
-                            <div id="summaryTable" class="summary-table">
-                                <p class="placeholder">Заповніть поля, щоб побачити підсумок 💰</p>
+
+                        <!-- CASH/NONCASH -->
+                        <div class="card p-3 mt-4">
+                            <div class="row g-2 align-items-center">
+                                <div class="col-md-4 d-flex p-1">
+                                    <label class="form-label">Сума готівки</label>
+                                    <input
+                                        type="number"
+                                        style="max-width: 150px; margin-left: 20px"
+                                        class="form-control cash-input"
+                                        data-type="cash"
+                                    />
+                                </div>
+
+                                <div class="col-md-4 d-flex p-1">
+                                    <label class="form-label">Сума безготівки</label>
+                                    <input
+                                        type="number"
+                                        style="max-width: 150px; margin-left: 20px"
+                                        class="form-control cash-input"
+                                        data-type="noncash"
+                                    />
+                                </div>
+
+                                <div class="col-md-4 p-1 justify-content-end bg-primary text-white text-center">
+                                    <label class="form-label px-2">Усього: </label>
+                                    <strong id="docTotal" class="fs-5">250000.00 грн</strong>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="total">Усього в касі: <span id="total">0.00 грн.</span></div>
-
-                    <div id="cash-non-cash">
-                        <div>
-                            <div class="form-group">
-                                <label>Сума виручки готівки:</label><input type="number" min="0" data-value="0" />
-                            </div>
-                            <div class="form-group">
-                                <label>Сума виручки безготівки:</label><input type="number" min="0" data-value="0" />
-                            </div>
-                        </div>
-                        <div class="total_sum">Сума документа: <span id="total">0.00 грн.</span></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-success w-100" data-bs-dismiss="modal">Зберегти</button>
                     </div>
-
-                    <button class="close-btn" id="closeModal">Зберегти</button>
                 </div>
             </div>
-        </main>
+        </div>
 
         <script src="./assets/js/main.js"></script>
     </body>

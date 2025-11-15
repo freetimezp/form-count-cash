@@ -1,131 +1,84 @@
-const openModal = document.querySelector("#cash-count #openModal");
-const closeModal = document.querySelector("#cash-count #closeModal");
-const modalOverlay = document.querySelector("#cash-count #modalOverlay");
-const inputs = document.querySelectorAll("#cash-count #formContainer input");
-const totalDisplay = document.querySelector("#cash-count #total");
-const info = document.querySelector("#cash-count #info");
+const info = document.querySelector("#info");
+const totalDisplay = document.querySelector("#total");
+const summaryList = document.querySelector("#summaryList");
+const docTotal = document.querySelector("#docTotal");
 
-// Modal open
-openModal.addEventListener("click", () => {
-    const today = new Date().toLocaleDateString("uk-UA", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
+// Fill modal header info
+document.getElementById("cashModal").addEventListener("show.bs.modal", () => {
+    const today = new Date().toLocaleDateString("uk-UA");
+    info.textContent = `${today} • Магазин 3 • Олена Петрівна • Каса №3`;
+});
+
+// Denominations
+const banknotes = [1000, 500, 200, 100, 50, 20, 10, 5, 2, 1];
+const coins = [10, 5, 2, 1, 0.5, 0.25];
+
+function renderInputs(id, values) {
+    const container = document.getElementById(id);
+    values.forEach((v) => {
+        container.innerHTML += `
+            <div class="input-group justify-content-between">
+                <span class="input-group-text" style="width: 90px;">${v >= 1 ? v + " грн" : v * 100 + " коп"}</span>
+                <input type="number" style="max-width: 150px;" class="form-control denom-input" data-value="${v}" min="0">
+            </div>`;
     });
-    const store = "Магазин 3";
-    const user = "Олена Петрівна";
-    const register = "№3";
-    info.textContent = `${today} • ${store} • ${user} • Каса ${register}`;
-    modalOverlay.style.display = "flex";
-});
-
-// Modal close
-closeModal.addEventListener("click", () => {
-    modalOverlay.style.display = "none";
-});
-
-// Calculate total + update summary + animated total
-inputs.forEach((input) => {
-    input.addEventListener("input", () => {
-        let total = 0;
-        let summaryData = [];
-
-        inputs.forEach((i) => {
-            const count = parseFloat(i.value) || 0;
-            const val = parseFloat(i.dataset.value);
-            const subtotal = count * val;
-
-            if (count > 0) {
-                summaryData.push({ denom: val, count, subtotal });
-                total += subtotal;
-            } else {
-                total += subtotal;
-            }
-        });
-
-        // Update summary table
-        const summaryTable = document.querySelector("#cash-count #summaryTable");
-        summaryTable.innerHTML = "";
-
-        if (summaryData.length === 0) {
-            summaryTable.innerHTML = `<p class="placeholder">Заповніть поля, щоб побачити підсумок 💰</p>`;
-        } else {
-            summaryData.sort((a, b) => b.denom - a.denom);
-            summaryData.forEach((item) => {
-                const denomLabel = item.denom >= 1 ? `${item.denom} грн` : `${item.denom * 100} коп`;
-                summaryTable.innerHTML += `
-                    <p>
-                        <span>${denomLabel}</span>
-                        <span>× ${item.count}</span>
-                        <span>= ${item.subtotal.toFixed(2)} ₴</span>
-                    </p>
-                `;
-            });
-        }
-
-        // Animate total display
-        animateTotal(total);
-    });
-});
-
-// --- Animated total counter ---
-let lastTotal = 0;
-function animateTotal(newTotal) {
-    const duration = 400;
-    const frameRate = 1000 / 60;
-    const steps = Math.round(duration / frameRate);
-    const increment = (newTotal - lastTotal) / steps;
-    let current = lastTotal;
-    let step = 0;
-
-    totalDisplay.classList.add("updated");
-
-    const counter = setInterval(() => {
-        step++;
-        current += increment;
-        totalDisplay.textContent = current.toFixed(2) + " ₴";
-
-        if (step >= steps) {
-            clearInterval(counter);
-            totalDisplay.textContent = newTotal.toFixed(2) + " ₴";
-            totalDisplay.classList.remove("updated");
-            lastTotal = newTotal;
-        }
-    }, frameRate);
 }
 
-const themeToggle = document.querySelector("#cash-count #themeToggle");
+renderInputs("banknotes", banknotes);
+renderInputs("coins", coins);
 
-themeToggle.addEventListener("click", () => {
-    document.body.classList.toggle("dark-mode");
+// Calculate totals
+function updateTotals() {
+    const inputs = document.querySelectorAll(".denom-input");
+    let total = 0;
+    let items = [];
 
-    // Toggle icon (moon/sun)
-    if (document.body.classList.contains("dark-mode")) {
-        themeToggle.textContent = "🌞";
+    inputs.forEach((inp) => {
+        const count = parseFloat(inp.value) || 0;
+        const value = parseFloat(inp.dataset.value);
+        if (count > 0) {
+            const subtotal = count * value;
+            items.push({ value, count, subtotal });
+            total += subtotal;
+        }
+    });
+
+    // Update summary list
+    summaryList.innerHTML = "";
+    if (items.length === 0) {
+        summaryList.innerHTML = `<li class="list-group-item text-muted">Заповніть поля</li>`;
     } else {
-        themeToggle.textContent = "🌙";
+        items.sort((a, b) => b.value - a.value);
+        items.forEach((i) => {
+            summaryList.innerHTML += `
+                <li class="list-group-item d-flex justify-content-between">
+                    <span>${i.value >= 1 ? i.value + " грн" : i.value * 100 + " коп"}</span>
+                    <span>× ${i.count}</span>
+                    <strong>${i.subtotal.toFixed(2)} грн</strong>
+                </li>`;
+        });
+    }
+
+    totalDisplay.textContent = total.toFixed(2) + " грн";
+}
+
+document.addEventListener("input", (e) => {
+    if (e.target.classList.contains("denom-input")) {
+        updateTotals();
     }
 });
 
-// --- Cash & Non-Cash total calculation ---
-const cashInputs = document.querySelectorAll("#cash-count #cash-non-cash input");
-const totalSumDisplay = document.querySelector("#cash-count .total_sum span");
-
-// Function to update document total
-function updateDocumentTotal() {
-    let totalSum = 0;
-    cashInputs.forEach((input) => {
-        const value = parseFloat(input.value) || 0;
-        totalSum += value;
+// Cash & Noncash
+document.querySelectorAll(".cash-input").forEach((inp) => {
+    inp.addEventListener("input", () => {
+        let s = 0;
+        document.querySelectorAll(".cash-input").forEach((i) => (s += parseFloat(i.value) || 0));
+        docTotal.textContent = s.toFixed(2) + " грн";
     });
+});
 
-    totalSumDisplay.textContent = `${totalSum.toFixed(2)} грн.`;
-    totalSumDisplay.classList.add("updated");
-
-    setTimeout(() => totalSumDisplay.classList.remove("updated"), 500);
-}
-
-// Listen for changes on both fields
-cashInputs.forEach((input) => {
-    input.addEventListener("input", updateDocumentTotal);
+// Theme switch
+document.getElementById("themeToggle").addEventListener("click", () => {
+    document.body.classList.toggle("bg-dark");
+    document.body.classList.toggle("text-white");
 });
