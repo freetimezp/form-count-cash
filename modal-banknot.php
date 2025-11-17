@@ -1,6 +1,24 @@
 <?php //include $_SERVER["DOCUMENT_ROOT"] . "/app/controllers/check.php";
 //$check_deffered = selectAllCheckDeffered(['check_status_id' => 1]);
 //tt($_SESSION['check_deffered']);
+
+$moneyData = [
+    "1000" => 1000,
+    "500"  => 500,
+    "200"  => 200,
+    "100"  => 100,
+    "50"   => 50,
+    "20"   => 20,
+    "10"   => 10,
+    "5"    => 5,
+    "2"    => 2,
+    "1"    => 1,
+    "0.5"  => 0.5,
+    "0.25" => 0.25,
+    "0.1"  => 0.1
+];
+
+$jsonMoneyData = json_encode($moneyData);
 ?>
 <style>
 .catalog-modal .modal-dialog {
@@ -118,6 +136,8 @@
 </div>
 
 <script>
+let moneyData = <?php echo json_encode($moneyData, JSON_UNESCAPED_UNICODE); ?>;
+
 const info = document.querySelector("#info");
 const docTotal = document.querySelector("#docTotal");
 const tableBody = document.querySelector("#BanknotDoc");
@@ -127,30 +147,17 @@ document.getElementById("cashModal").addEventListener("show.bs.modal", () => {
     info.textContent = `${today} • Магазин 3 • Олена Петрівна • Каса №3`;
 });
 
-const moneyData = [
-    { name: "1000 грн.", value: 1000 },
-    { name: "500 грн.", value: 500 },
-    { name: "200 грн.", value: 200 },
-    { name: "100 грн.", value: 100 },
-    { name: "50 грн.", value: 50 },
-    { name: "20 грн.", value: 20 },
-    { name: "10 грн.", value: 10 },
-    { name: "5 грн.", value: 5 },
-    { name: "2 грн.", value: 2 },
-    { name: "1 грн.", value: 1 },
-    { name: "10 грн.(коп.)", value: 10 },
-    { name: "5 грн.(коп.)", value: 5 },
-    { name: "2 грн.(коп.)", value: 2 },
-    { name: "1 грн.(коп.)", value: 1 },
-    { name: "50 коп.", value: 0.5 },
-    { name: "25 коп.", value: 0.25 },
-    { name: "10 коп.", value: 0.1 },
-];
 
 function buildTable() {
     tableBody.innerHTML = "";
 
-    moneyData.forEach((item, index) => {
+    if(moneyData) {
+        const moneyArray = Object.entries(moneyData).map(([name, value]) => ({
+            name,
+            value,
+        }));
+
+        moneyArray.forEach((item, index) => {
         const row = document.createElement("tr");
 
         row.innerHTML = `
@@ -169,6 +176,7 @@ function buildTable() {
 
         tableBody.appendChild(row);
     });
+    }
 }
 
 function updateTotals() {

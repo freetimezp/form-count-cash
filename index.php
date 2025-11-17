@@ -1,3 +1,27 @@
+<?php
+$moneyData = [
+    "1000" => 1000,
+    "500"  => 500,
+    "200"  => 200,
+    "100"  => 100,
+    "50"   => 50,
+    "20"   => 20,
+    "10"   => 10,
+    "5"    => 5,
+    "2"    => 2,
+    "1"    => 1,
+    "0.5"  => 0.5,
+    "0.25" => 0.25,
+    "0.1"  => 0.1
+];
+
+$jsonMoneyData = json_encode($moneyData);
+?>
+
+<script>
+    let moneyData = <?php echo json_encode($moneyData, JSON_UNESCAPED_UNICODE); ?>;
+</script>
+
 <!DOCTYPE html>
 <html lang="uk">
     <head>
@@ -121,5 +145,6 @@
         </div>
 
         <script src="./assets/js/main.js"></script>
+
     </body>
 </html>
